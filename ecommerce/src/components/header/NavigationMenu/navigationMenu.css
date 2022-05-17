@@ -1,0 +1,4 @@
+li a.navLink:focus {
+    color: #fdb45e !important;
+    background-color: transparent !important;
+}
