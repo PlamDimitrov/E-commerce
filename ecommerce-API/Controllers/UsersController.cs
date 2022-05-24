@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ecommerce_API.Data;
 using ecommerce_API.Models;
-using Microsoft.Net.Http.Headers;
 using ecommerce_API.Entities;
+using ecommerce_API.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ecommerce_API.Controllers
 
@@ -13,8 +14,8 @@ namespace ecommerce_API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly JwtSettings _jwtSettings;
         private readonly ecommerce_APIContext _context;
+        private readonly JwtSettings _jwtSettings;
 
         public UsersController(ecommerce_APIContext context, JwtSettings jwtSettings)
         {
@@ -61,6 +62,7 @@ namespace ecommerce_API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -116,10 +118,10 @@ namespace ecommerce_API.Controllers
 
         [HttpPost]
         [Route("login")]
+        [Authorize]
         public async Task<ActionResult<UserLogin>> LogInUser(UserLogin userLogin)
         {
             bool verified = false;
-            var Token = new UserTokens();
             try
             {
                 var userFromDataBase = await _context.User
@@ -131,25 +133,9 @@ namespace ecommerce_API.Controllers
                 }
                 if (userFromDataBase != null && verified == true)
                 {
-                    var userData = userFromDataBase.FirstOrDefault();
-                    Token = JwtHelpers.JwtHelpers.GenTokenkey(new UserTokens()
-                    {
-                        GuidId = Guid.NewGuid(),
-                        UserName = userData.userName,
-                        Id = userData.Id,
-                        ExpiredTime = DateTime.Now.AddDays(2)
-                    }, _jwtSettings);
-
-                    Response.Cookies.Append("ecom-auth-token", Token.Token, new CookieOptions()
-                    {
-                        Expires = DateTimeOffset.Now.AddHours(24),
-                        Path = "/",
-                        HttpOnly = true,
-                        Secure = true,
-                    });
-
-                    return Ok(Token);
-
+                   var token = JwtHelpers.JwtHelpers.SetToken(_jwtSettings, userFromDataBase.FirstOrDefault());
+                   CookieHelper.CreateTokenCookie(Response, token);
+                   return Ok();
                 }
                 else
                 {
@@ -181,6 +167,7 @@ namespace ecommerce_API.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _context.User.FindAsync(id);

@@ -10291,11 +10291,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hipo\\Desktop\\New folder\\ecommerce-API\\ecommerce-API.csproj",
+      "projectUniqueName": "E:\\GitHub\\PlamDimitrov\\E-commerce\\ecommerce-API\\ecommerce-API.csproj",
       "projectName": "ecommerce-API",
-      "projectPath": "C:\\Users\\Hipo\\Desktop\\New folder\\ecommerce-API\\ecommerce-API.csproj",
+      "projectPath": "E:\\GitHub\\PlamDimitrov\\E-commerce\\ecommerce-API\\ecommerce-API.csproj",
       "packagesPath": "C:\\Users\\Hipo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hipo\\Desktop\\New folder\\ecommerce-API\\obj\\",
+      "outputPath": "E:\\GitHub\\PlamDimitrov\\E-commerce\\ecommerce-API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

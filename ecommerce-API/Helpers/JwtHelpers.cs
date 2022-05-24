@@ -45,5 +45,18 @@ namespace ecommerce_API.JwtHelpers
                 throw;
             }
         }
+        public static UserTokens SetToken(JwtSettings jwtSettings ,User userFromDataBase)
+        {
+            var userData = userFromDataBase;
+            var token = GenTokenkey(new UserTokens()
+            {
+                GuidId = Guid.NewGuid(),
+                UserName = userData.userName,
+                Id = userFromDataBase.Id,
+                ExpiredTime = DateTime.Now.AddDays(2)
+            }, jwtSettings);
+
+            return token;
+        }
     }
 }

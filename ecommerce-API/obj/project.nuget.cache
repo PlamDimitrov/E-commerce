@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "d5B+2Vab1DKRd0iYR2+5lqbsrAek/6y4/Az6FbywXxidQZd+36lI0kphJr+61FLu0XARiAFEM2rJD9zUXl13Gg==",
+  "dgSpecHash": "SKgvF+LsKJlMWIT0MgBgXhwFPqROAO8mMBT8aDPEBMnMxXcs6yfHPbnt/3l21UOBLm5T30pRv7gnK9xebaOhCA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hipo\\Desktop\\New folder\\ecommerce-API\\ecommerce-API.csproj",
+  "projectFilePath": "E:\\GitHub\\PlamDimitrov\\E-commerce\\ecommerce-API\\ecommerce-API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hipo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Hipo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

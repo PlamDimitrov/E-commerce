@@ -49,6 +49,7 @@ namespace ecommerce_API.Controllers
         // PUT: api/Brands/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("edit/{id}")]
+        [Authorize]
         public async Task<IActionResult> PutBrand(int id, Brand brand)
         {
             if (id != brand.Id)
@@ -81,6 +82,7 @@ namespace ecommerce_API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route("create")]
+        [Authorize]
         public async Task<ActionResult<Brand>> PostBrand(Brand brand)
         {
             _context.Brand.Add(brand);
@@ -91,6 +93,7 @@ namespace ecommerce_API.Controllers
 
         // DELETE: api/Brands/5
         [HttpDelete("delete")]
+        [Authorize]
         public async Task<IActionResult> DeleteBrand(Brand brand)
         {
             var brandFromDatabase = await _context.Brand.FindAsync(brand.Id);
