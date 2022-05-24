@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ecommerce_API.Data;
 using ecommerce_API.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ecommerce_API.Controllers
 {
