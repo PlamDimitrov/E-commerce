@@ -118,7 +118,6 @@ namespace ecommerce_API.Controllers
 
         [HttpPost]
         [Route("login")]
-        [Authorize]
         public async Task<ActionResult<UserLogin>> LogInUser(UserLogin userLogin)
         {
             bool verified = false;
@@ -192,6 +191,33 @@ namespace ecommerce_API.Controllers
             
         }
 
+        [HttpGet]
+        [Route("auth")]
+        public async Task<ActionResult<User>> Authenticate()
+        {
+            string token = Request.Cookies["ecom-auth-token"];
+            var validation = JwtHelpers.JwtHelpers.ValidateJwtToken(token, _jwtSettings);
+            if (validation != null)
+            {
+                var userId = validation;
+                try
+                {
+                    var user = await _context.User.FindAsync(userId);
+                    user.password = null;
+                    return user;
+                }
+                catch (Exception)
+                {
+
+                    throw new Exception("Error: User not found!"); ;
+                }
+                
+            } else
+            {
+                throw new Exception("Error: User not authenticated!");
+            }
+
+        }
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.Id == id);

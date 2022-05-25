@@ -2,6 +2,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ecommerce_API.Models;
+
+
 namespace ecommerce_API.JwtHelpers
 {
     public static class JwtHelpers
@@ -57,6 +59,35 @@ namespace ecommerce_API.JwtHelpers
             }, jwtSettings);
 
             return token;
+        }
+
+        public static int? ValidateJwtToken(string token, JwtSettings jwtSettings)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = System.Text.Encoding.ASCII.GetBytes(jwtSettings.IssuerSigningKey);
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "Id").Value);
+
+                // return account id from JWT token if validation successful
+                return accountId;
+            }
+            catch
+            {
+                // return null if validation fails
+                return null;
+            }
         }
     }
 }
