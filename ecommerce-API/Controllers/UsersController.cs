@@ -163,10 +163,20 @@ namespace ecommerce_API.Controllers
             expiredToken.ExpiredTokenValue = tokenValue;
             expiredToken.ExpiredTime = tokenValidTo;
 
+            try
+            {
             _context.ExpiredTokens.Add(expiredToken);
             await _context.SaveChangesAsync();
-
+            Response.Cookies.Delete("ecom-auth-token");
             return Ok();
+
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Error: Token not send to database!");
+            }
+
         }
 
         // DELETE: api/Users/5
