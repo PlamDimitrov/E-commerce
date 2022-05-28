@@ -6,6 +6,7 @@ using ecommerce_API.Models;
 using ecommerce_API.Entities;
 using ecommerce_API.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ecommerce_API.Controllers
 
@@ -134,7 +135,8 @@ namespace ecommerce_API.Controllers
                 {
                    var token = JwtHelpers.JwtHelpers.SetToken(_jwtSettings, userFromDataBase.FirstOrDefault());
                    CookieHelper.CreateTokenCookie(Response, token);
-                   return Ok();
+                    userFromDataBase.FirstOrDefault().password = null;
+                   return Ok(userFromDataBase);
                 }
                 else
                 {
@@ -150,15 +152,18 @@ namespace ecommerce_API.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("logout")]
-        public async Task<ActionResult> LogoutUser(string userId, UserTokens token)
+        public async Task<ActionResult> LogoutUser()
         {
-            var tokenValue = new ExpiredToken();
-            tokenValue.ExpiredTokenValue = token.Token;
-            tokenValue.ExpiredTime = token.Validaty;
-            
-            _context.ExpiredTokens.Add(tokenValue);
+            var tokenValue = Request.Cookies["ecom-auth-token"];
+            var handler = new JwtSecurityTokenHandler();
+            var tokenValidTo = handler.ReadJwtToken(tokenValue).ValidTo;
+            var expiredToken = new ExpiredToken(); 
+            expiredToken.ExpiredTokenValue = tokenValue;
+            expiredToken.ExpiredTime = tokenValidTo;
+
+            _context.ExpiredTokens.Add(expiredToken);
             await _context.SaveChangesAsync();
 
             return Ok();

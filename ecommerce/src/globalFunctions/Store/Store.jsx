@@ -24,6 +24,7 @@ const asyncActionMap = {
         } else {
           hasError = false;
         }
+        console.log(`HERE: ${JSON.stringify(res)}`);
         return res;
       })
       .then(res => res.json())
