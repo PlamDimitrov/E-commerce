@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ecommerce_API.Data;
 using ecommerce_API.Extensions;
+using ecommerce_API.Helpers;
+using ecommerce_API.JwtHelpers;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
@@ -44,5 +46,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+PeriodicallyCaller.Call(2000, JwtHelpers.CleanJwtObsoleteTokenFromDatabase);
 
 app.Run();

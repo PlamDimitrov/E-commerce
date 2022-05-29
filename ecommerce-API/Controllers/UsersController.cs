@@ -50,12 +50,10 @@ namespace ecommerce_API.Controllers
                 {
                     return NotFound();
                 }
-
                 return user;
             }
             catch (Exception)
             {
-
                 throw new Exception("Error: Not possible to get the user!");
             }
         }
@@ -189,7 +187,6 @@ namespace ecommerce_API.Controllers
             {
                 return NotFound();
             }
-
             try
             {
                 _context.User.Remove(user);
@@ -202,8 +199,6 @@ namespace ecommerce_API.Controllers
 
                 throw new Exception("Error: User not deleted!");
             }
-
-            
         }
 
         [HttpGet]
@@ -212,7 +207,8 @@ namespace ecommerce_API.Controllers
         {
             string token = Request.Cookies["ecom-auth-token"];
             var validation = JwtHelpers.JwtHelpers.ValidateJwtToken(token, _jwtSettings);
-            if (validation != null)
+            var isTokenObsolete = await JwtHelpers.JwtHelpers.CheckObsoleteToken(token, _context);
+            if (validation != null && !isTokenObsolete)
             {
                 var userId = validation;
                 try
